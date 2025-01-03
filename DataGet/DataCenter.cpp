@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 23:27:04
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-03 23:30:22
+ * @LastEditTime: 2025-01-04 00:23:12
  * @Description: 
  */
 #include "DataCenter.h"
@@ -28,4 +28,9 @@ DataCenter::~DataCenter()
 void DataCenter::Construct()
 {
     instance_ = new DataCenter();
+}
+
+void DataCenter::setStrategy(Strategy* s)
+{
+    dataApi_->setStrategy(s);
 }

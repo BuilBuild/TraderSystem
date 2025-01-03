@@ -23,8 +23,8 @@ add_library(TraderSystem_base
     ${DataGet_SRC} 
     ${Strategy_SRC}
     )
-    
-target_link_libraries(TraderSystem_base TBB::tbb)
+
+target_link_libraries(TraderSystem_base TBB::tbb muduo_base)
 
 
 add_subdirectory(src)

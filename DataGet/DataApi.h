@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:29:18
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-03 23:44:19
+ * @LastEditTime: 2025-01-04 00:22:29
  * @Description: 
  */
 #pragma once
@@ -12,6 +12,7 @@
 
 #include <string>
 #include <tbb/concurrent_vector.h>
+#include <tbb/concurrent_unordered_map.h>
 
 class Strategy;
 
@@ -46,6 +47,18 @@ private:
  */
 class DataApi
 {
+    using QuoteElementMap = tbb::concurrent_unordered_map<std::string, QuoteElement>;
 public:
     DataApi();
+    /**
+     * @brief Set the Strategy object 给数据api注册策略
+     * 
+     */
+    void setStrategy(Strategy*);
+    void delStrategy(std::string strategyName);
+    
+private:
+    // 全部订阅的列表,k:标的，v:订单簿
+    QuoteElementMap QuoteElementMap_;
+
 };
