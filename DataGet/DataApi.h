@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:29:18
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-03 22:59:25
+ * @LastEditTime: 2025-01-03 23:44:19
  * @Description: 
  */
 #pragma once
@@ -39,4 +39,13 @@ private:
     OrderBook orderBook_;
     // 被订阅的策略列表
     QuoterList quoterList_;
+};
+
+/**
+ * @brief 封装CTP等各种协议
+ */
+class DataApi
+{
+public:
+    DataApi();
 };
