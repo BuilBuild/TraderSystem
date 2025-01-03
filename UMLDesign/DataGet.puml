@@ -26,9 +26,9 @@ class QuoteEle
     void unSubscribe(Strategy)
 }
 
-class DataFeed_API
+class DataCenter
 {
-    dateApi_ : DataApi*
+    dataApi_ : DataApi*
     allQuoteList_ : QuoteArrayList 
     memberMap_: QuoteMemberMap<Strategy*, QuoteArrayList> 
     quoteOrderMap_: QuoteOrderMap<string, OrderBook> 
@@ -37,7 +37,7 @@ class DataFeed_API
     
 } 
 
-DataFeed_API -- CTP_API : have 1 >
+DataCenter -- DataApi : have 1 >
 ' DataFeed_API -- Strategy : have 0...* >
 
 @enduml
