@@ -1,0 +1,43 @@
+@startuml
+
+
+class DataApi
+{
+
+}
+class CTP_API
+{
+
+}
+DataApi <|-- CTP_API
+
+class Strategy
+{
+
+}
+
+class QuoteEle
+{
+    objName_ : String 
+    quoterList_ : QuoterList<Strategy*>
+    orderBook_ : OrderBook
+    void update(OrderBook&)
+    void subscribe(Strategy*)
+    void unSubscribe(Strategy)
+}
+
+class DataFeed_API
+{
+    dateApi_ : DataApi*
+    allQuoteList_ : QuoteArrayList 
+    memberMap_: QuoteMemberMap<Strategy*, QuoteArrayList> 
+    quoteOrderMap_: QuoteOrderMap<string, OrderBook> 
+    void update()
+    void addQuote(QuoteMSG)
+    
+} 
+
+DataFeed_API -- CTP_API : have 1 >
+' DataFeed_API -- Strategy : have 0...* >
+
+@enduml
