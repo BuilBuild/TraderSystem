@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 00:30:16
+ * @LastEditTime: 2025-01-04 20:49:16
  * @Description: 
  */
 #include "DataApi.h"
@@ -30,8 +30,18 @@ void QuoteElement::subscribe(Strategy *s)
     quoterList_.push_back(s);
 }
 
+
 DataApi::DataApi()
 {
+    // 模拟一份可订阅合集，后期需从其他地方读入
+    for(int i = 0; i< 10; ++i)
+    {
+        char t_name[128] = {0};
+        sprintf(t_name, "target_%d", i);
+        TargetOBJ e;
+        e.name = t_name;
+        dataApiTargetObjects_.insert(e);
+    }
 }
 
 void DataApi::setStrategy(Strategy *s)
@@ -41,4 +51,9 @@ void DataApi::setStrategy(Strategy *s)
 
 void DataApi::delStrategy(std::string strategyName)
 {
+}
+
+const QuoteSet& DataApi::getTargetObjectQuoteSet()
+{
+    return dataApiTargetObjects_;
 }

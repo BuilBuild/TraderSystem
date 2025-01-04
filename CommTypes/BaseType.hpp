@@ -2,12 +2,13 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 12:49:06
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 16:19:41
+ * @LastEditTime: 2025-01-04 19:32:43
  * @Description: 基础数据类型描述
  */
 #pragma once
 
 #include <sys/types.h>
+#include <string>
 
 
 enum TargetType
@@ -73,7 +74,12 @@ typedef struct OrderBookElement
  */
 typedef struct TargetOBJ
 {
-	char name[64];
+	std::string name;
+	//比较运算符重载,按位置排序
+	bool operator <(const TargetOBJ & a) const
+	{
+		return this->name < a.name;
+	}
 } TargetOBJ;
 
 

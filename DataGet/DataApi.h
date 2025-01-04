@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:29:18
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 00:22:29
+ * @LastEditTime: 2025-01-04 20:35:21
  * @Description: 
  */
 #pragma once
@@ -42,23 +42,39 @@ private:
     QuoterList quoterList_;
 };
 
+
+using QuoteSet = tbb::concurrent_set<TargetOBJ>;
 /**
  * @brief 封装CTP等各种协议
  */
-class DataApi
+class DataApi : noncopyable
 {
     using QuoteElementMap = tbb::concurrent_unordered_map<std::string, QuoteElement>;
 public:
-    DataApi();
+    explicit DataApi();
     /**
      * @brief Set the Strategy object 给数据api注册策略
      * 
      */
     void setStrategy(Strategy*);
+
+    /**
+     * @brief 删除的策略
+     * 
+     * @param strategyName 
+     */
     void delStrategy(std::string strategyName);
+
+    /**
+     * @brief Get the Target Object Quote Set object
+     * 返回所有可订阅合集
+     */
+    const QuoteSet& getTargetObjectQuoteSet();
+    
     
 private:
     // 全部订阅的列表,k:标的，v:订单簿
     QuoteElementMap QuoteElementMap_;
-
+    // 可订阅合集
+    QuoteSet dataApiTargetObjects_;
 };

@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 21:51:57
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 16:28:01
+ * @LastEditTime: 2025-01-04 20:24:57
  * @Description: 
  */
 #pragma once
@@ -22,11 +22,11 @@
 extern DataApi* DATA_API;
 
 /**
- * @brief 单列
+ * @brief 单例
  */
 class DataCenter
 {
-    using QuoteList = tbb::concurrent_vector<std::string>;
+    using QuoteSet = tbb::concurrent_set<TargetOBJ>;
     using StrategyRegistMap  = tbb::concurrent_unordered_map<std::string, Strategy*>;
 public:
     static DataCenter* getInstance();
@@ -35,9 +35,22 @@ public:
      * @brief Set the Strategy object 注册策略
      */
     void setStrategy(Strategy*);
+    /**
+     * @brief 更新标定订阅
+     */
+    void updateSubscribe(Strategy* s);
 private:
     DataCenter();
     ~DataCenter();
+    
+    /**
+     * @brief 用于检查策略是否被注册过，通过策略名来检查
+     * 
+     * @param s 
+     * @return true 注册过
+     * @return false 没注册过
+     */
+    bool checkStrategyIsRegist(const Strategy *s) const;
 
     /**
      * @brief 用于单例初始化构造
@@ -51,8 +64,7 @@ private:
     // 封装好的数据接口
     DataApi* dataApi_;
     // 订阅列表
-    QuoteList quoteList_;
-
+    QuoteSet TargetObjectQuoteSet_;
     // 数据中心注册的策略集合  
     StrategyRegistMap strategyRegistMap_;
     
