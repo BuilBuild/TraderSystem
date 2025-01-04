@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 12:49:06
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-03 22:33:19
+ * @LastEditTime: 2025-01-04 16:19:41
  * @Description: 基础数据类型描述
  */
 #pragma once
@@ -68,4 +68,25 @@ typedef struct OrderBookElement
     void* MsgHandle;
 } OrderBook;
 
+/**
+ * @brief 标的信息
+ */
+typedef struct TargetOBJ
+{
+	char name[64];
+} TargetOBJ;
 
+
+
+/**
+ * @brief 用于类不可复制继承
+ */
+class noncopyable
+{
+public:
+    noncopyable(const noncopyable&) = delete;
+    noncopyable& operator = (const noncopyable&) = delete;
+protected:
+    noncopyable() = default;
+    ~noncopyable() = default;
+};
