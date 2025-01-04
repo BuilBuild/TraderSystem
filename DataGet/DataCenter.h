@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 21:51:57
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 00:09:20
+ * @LastEditTime: 2025-01-04 16:28:01
  * @Description: 
  */
 #pragma once
@@ -27,6 +27,7 @@ extern DataApi* DATA_API;
 class DataCenter
 {
     using QuoteList = tbb::concurrent_vector<std::string>;
+    using StrategyRegistMap  = tbb::concurrent_unordered_map<std::string, Strategy*>;
 public:
     static DataCenter* getInstance();
 
@@ -51,6 +52,8 @@ private:
     DataApi* dataApi_;
     // 订阅列表
     QuoteList quoteList_;
-    
+
+    // 数据中心注册的策略集合  
+    StrategyRegistMap strategyRegistMap_;
     
 };
