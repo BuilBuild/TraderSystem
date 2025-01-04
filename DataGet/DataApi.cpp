@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 20:49:16
+ * @LastEditTime: 2025-01-04 22:41:12
  * @Description: 
  */
 #include "DataApi.h"
@@ -19,7 +19,7 @@ QuoteElement::~QuoteElement()
 
 void QuoteElement::update(OrderBook &orderBook)
 {
-    for(auto ele : quoterList_)
+    for(auto ele : quoterSet_)
     {
         ele->pushDate(orderBook);
     }
@@ -27,9 +27,13 @@ void QuoteElement::update(OrderBook &orderBook)
 
 void QuoteElement::subscribe(Strategy *s)
 {
-    quoterList_.push_back(s);
-}
+    quoterSet_.insert(s);
+}   
 
+std::string QuoteElement::name() const
+{
+    return name_;
+}
 
 DataApi::DataApi()
 {
@@ -42,11 +46,36 @@ DataApi::DataApi()
         e.name = t_name;
         dataApiTargetObjects_.insert(e);
     }
+    // 初始化订单簿
+    for(const auto &t: dataApiTargetObjects_)
+    {
+        quoteElementMap_.insert(std::pair<std::string, QuoteElement>(t.name, t.name));
+    }
+
 }
 
 void DataApi::setStrategy(Strategy *s)
 {
     LOG_INFO << s->name();
+}
+
+void DataApi::subscribeTarget(Strategy *s, const TargetOBJ &targetOBJ)
+{
+   auto t =  quoteElementMap_.find(targetOBJ.name);
+   
+   if(t != quoteElementMap_.end())
+   {
+        LOG_INFO<< t->second.name() <<  "##### is regist! the strategy name is " << s->name()
+            << " TargetOBJ name is " << targetOBJ.name;
+        // 向定单簿里注册策略
+        t->second.subscribe(s);
+
+   }
+   else
+   {
+        LOG_WARN << t->second.name()  << " regist failed. the strategy name is " << s->name()
+            << " TargetOBJ name is " << targetOBJ.name;
+   }
 }
 
 void DataApi::delStrategy(std::string strategyName)

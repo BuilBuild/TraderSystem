@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 23:27:04
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 20:59:10
+ * @LastEditTime: 2025-01-04 22:22:45
  * @Description: 
  */
 #include "DataCenter.h"
@@ -35,8 +35,7 @@ void DataCenter::updateSubscribe(Strategy* s)
             {
                 LOG_INFO << "数据中心存在 #####  " << t.name << " 的订阅";
                 // 将订阅注册到DataAPI
-
-                
+                dataApi_->subscribeTarget(s, t);
             }
             else
             {
@@ -67,8 +66,7 @@ DataCenter::~DataCenter()
 
 bool DataCenter::checkStrategyIsRegist(const Strategy *s) const
 {
-    auto it =  strategyRegistMap_.find(s->name());
-    if(it == strategyRegistMap_.end())
+    if(strategyRegistMap_.find(s->name()) == strategyRegistMap_.end())
     {
         return false;
     }
