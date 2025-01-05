@@ -2,11 +2,12 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 23:02:22
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 19:37:10
+ * @LastEditTime: 2025-01-04 22:46:33
  * @Description: 
  */
 #include "Strategy.h"
 #include "DataCenter.h"
+#include <muduo/base/Logging.h>
 
 Strategy::Strategy(std::string nameArg, DataCenter *dataCenter)
     :name_(nameArg),dataCenter_(dataCenter)
@@ -14,8 +15,10 @@ Strategy::Strategy(std::string nameArg, DataCenter *dataCenter)
     dataCenter_->setStrategy(this);
 }
 
-void Strategy::pushDate(const OrderBook &)
+void Strategy::pushDate(const OrderBook &orderBook)
 {
+    LOG_INFO <<"_+_+_+_+_+_" << orderBook.AskPrice1 ;
+    LOG_INFO <<"_+_+_+_+_+_" << orderBook.TargeName ;
 }
 
 void Strategy::subScribeTargets(const TargetOBJ targetObjects[], size_t num)
