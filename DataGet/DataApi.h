@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:29:18
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 15:01:36
+ * @LastEditTime: 2025-01-05 15:46:04
  * @Description: 
  */
 #pragma once
@@ -24,6 +24,10 @@
 
 class Strategy;
 
+/**
+ * @brief 里面维护着一个标的的OrderBook,还有订阅该标的的策略指针，OrderBook更新的时候
+ * 回通过策略的指针将数据推送到策略订阅数据的缓存队列，让策略线程处理分发过来的数据
+ */
 class QuoteElement
 {
     using QuoterSet = tbb::concurrent_unordered_set<Strategy*>;
@@ -41,7 +45,9 @@ public:
      * @brief 策略订阅
      */
     void subscribe(Strategy*);
-
+    /**
+     * @brief 获取该对象的名字，也就是所订阅数据的名称
+     */
     std::string name() const;
 
 private:
