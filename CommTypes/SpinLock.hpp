@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-05 00:07:50
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 00:11:39
+ * @LastEditTime: 2025-01-05 15:02:33
  * @Description: 
  */
 
@@ -45,10 +45,10 @@ private:
  * 如果锁已经被占用，则循环等待直到锁被释放。unlock() 方法则将locked设置为false，
  * 允许其他等待的线程获取锁。
  */
-void useSpinLock() {
-    SpinLock myLock;
+// void useSpinLock() {
+//     SpinLock myLock;
  
-    myLock.lock();
-    // 临界区代码
-    myLock.unlock();
-}
+//     myLock.lock();
+//     // 临界区代码
+//     myLock.unlock();
+// }

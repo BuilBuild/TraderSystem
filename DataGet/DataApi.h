@@ -2,14 +2,14 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:29:18
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 14:52:28
+ * @LastEditTime: 2025-01-05 15:01:36
  * @Description: 
  */
 #pragma once
 
 #include "BaseType.hpp"
 #include "Strategy.h"
-// #include "SpinLock.hpp"
+#include "SpinLock.hpp"
 
 #include <string>
 #include <tbb/concurrent_vector.h>
@@ -52,7 +52,7 @@ private:
     // 被订阅的策略列表
     QuoterSet quoterSet_;
     std::mutex orderBookUpdateMtx_;
-    // SpinLock orderBookSpinLock_;
+    SpinLock orderBookSpinLock_;
 };
 
 

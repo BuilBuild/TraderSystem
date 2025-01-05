@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 14:43:11
+ * @LastEditTime: 2025-01-05 15:02:05
  * @Description: 
  */
 #include "DataApi.h"
@@ -24,10 +24,11 @@ void QuoteElement::update(OrderBook &orderBook)
     {
         ele->pushDate(orderBook);
     }
+    
     // 利用自旋锁保证拷贝一致
-    // orderBookSpinLock_.unlock();
-    // memcpy(&orderBook_, &orderBook, sizeof(OrderBook));
-    // orderBookSpinLock_.unlock();
+    orderBookSpinLock_.unlock();
+    memcpy(&orderBook_, &orderBook, sizeof(OrderBook));
+    orderBookSpinLock_.unlock();
 }
 
 void QuoteElement::subscribe(Strategy *s)
