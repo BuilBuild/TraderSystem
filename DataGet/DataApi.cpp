@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 15:02:05
+ * @LastEditTime: 2025-01-05 15:16:31
  * @Description: 
  */
 #include "DataApi.h"
@@ -24,7 +24,7 @@ void QuoteElement::update(OrderBook &orderBook)
     {
         ele->pushDate(orderBook);
     }
-    
+
     // 利用自旋锁保证拷贝一致
     orderBookSpinLock_.unlock();
     memcpy(&orderBook_, &orderBook, sizeof(OrderBook));
@@ -108,10 +108,10 @@ void DataApi::PutOrderBook(const OrderBook &orderBook)
 
 void DataApi::OrderDistribute()
 {
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-    auto t = orderQueue_.unsafe_size();
-    LOG_INFO << "OrderDistribute Func, OrderQueue is empty? " << (orderQueue_.empty()? "true": "false") 
-        << " queue size: " << t;
+    // std::this_thread::sleep_for(std::chrono::seconds(2));
+    // auto t = orderQueue_.unsafe_size();
+    // LOG_INFO << "OrderDistribute Func, OrderQueue is empty? " << (orderQueue_.empty()? "true": "false") 
+    //     << " queue size: " << t;
     // 如果队列不为空取出数据更新到订单簿列表
     if(!orderQueue_.empty())
     {   
@@ -119,7 +119,8 @@ void DataApi::OrderDistribute()
         // 如果队列元素获取成功，数据则会写入到orderBook中
         if(orderQueue_.try_pop(orderBook))
         {
-            LOG_INFO <<"order name is "<< orderBook.TargeName <<"| get price " << orderBook.AskPrice1;
+            LOG_DEBUG<< "orderQueue_::size " << orderQueue_.unsafe_size();
+            LOG_DEBUG <<"order name is "<< orderBook.TargeName <<"| get price " << orderBook.AskPrice1;
             // 更新订单簿
             auto c = quoteElementMap_.find(orderBook.TargeName);
             if(c != quoteElementMap_.end())

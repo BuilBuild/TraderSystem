@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 set(CXX_STANDARD 17)
 
+add_definitions(-LOG_DEBUG)
+
 set(HEADER_DIR 
     ${PROJECT_SOURCE_DIR}/ThirdParty
     ${PROJECT_SOURCE_DIR}/Strategy

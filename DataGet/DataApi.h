@@ -113,7 +113,7 @@ private:
     QuoteSet dataApiTargetObjects_;
     // 推送订单簿的缓冲队列
     OrderQueue orderQueue_;
-    // 分发订单簿线程
+    // 分发订单簿线程 后期可以用线程池来提高效率
     std::thread threadDistribute_;
 
 };

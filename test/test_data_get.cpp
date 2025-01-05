@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 23:34:15
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 23:34:43
+ * @LastEditTime: 2025-01-05 15:30:55
  * @Description: 
  */
 #include <iostream>
@@ -10,6 +10,7 @@
 #include "DataApi.h"
 #include "Strategy.h"
 
+#include <muduo/base/Logging.h>
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -17,7 +18,7 @@
 
 
 DataApi* DATA_API = nullptr;
-
+// Logger::LogLevel g_logLevel
 // 启动一个线程向DataApi实例里推送数据
 void putDataToAdataApi(DataApi *dataApi)
 {
@@ -26,14 +27,21 @@ void putDataToAdataApi(DataApi *dataApi)
     sprintf(orderbook.TargeName, "target_7");
     while(true)
     {
-        dataApi->PutOrderBook(orderbook);
-        orderbook.AskPrice1 += 0.5;
+        for(int i=0;i<50; ++i)
+        {
+            dataApi->PutOrderBook(orderbook);
+            orderbook.AskPrice1 += 0.5;
+        }
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
 
 int main()
 {
+#ifdef LOG_DEBUG
+    muduo::Logger::Logger::setLogLevel(muduo::Logger::LogLevel::DEBUG);
+#endif
+
     DATA_API = new DataApi();
     auto t = DataCenter::getInstance();
     Strategy s1 = Strategy("s1",t);

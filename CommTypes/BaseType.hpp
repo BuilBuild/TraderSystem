@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 12:49:06
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 19:32:43
+ * @LastEditTime: 2025-01-05 15:06:58
  * @Description: 基础数据类型描述
  */
 #pragma once
@@ -66,7 +66,7 @@ typedef struct OrderBookElement
 	///申卖量五
 	int	AskVolume5;
     // 外部回调指针
-    void* MsgHandle;
+    // void* MsgHandle;
 } OrderBook;
 
 /**
