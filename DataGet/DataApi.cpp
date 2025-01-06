@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 02:16:10
+ * @LastEditTime: 2025-01-07 02:27:11
  * @Description: 
  */
 #include "DataApi.h"
@@ -131,8 +131,8 @@ void DataApi::OrderDistribute()
         // 如果队列元素获取成功，数据则会写入到orderBook中
         if(orderQueue_.try_pop(orderBook))
         {
-            LOG_DEBUG<< "orderQueue_::size " << orderQueue_.unsafe_size();
-            LOG_DEBUG <<"order name is "<< orderBook.TargeName <<"| get price " << orderBook.AskPrice1;
+            // LOG_DEBUG<< "orderQueue_::size " << orderQueue_.unsafe_size();
+            std::cout <<"order name is "<< orderBook.TargeName <<"| get price " << orderBook.LastPrice << std::endl;;
             // 更新订单簿
             
             auto c = quoteElementMap_.find(orderBook.TargeName);
