@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 14:28:20
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 16:13:09
+ * @LastEditTime: 2025-01-06 21:48:11
  * @Description: 
  */
 #pragma once
@@ -30,6 +30,8 @@ public:
     {
         return messageHubBindPort_;
     }
+    
+    const json& getJson();
 
 private:
     Context();

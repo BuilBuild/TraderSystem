@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 16:13:24
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 16:15:28
+ * @LastEditTime: 2025-01-06 21:48:38
  * @Description: 
  */
 #include "Context.hpp"
@@ -16,6 +16,11 @@ Context *Context::getInstance()
 {
     std::call_once(flag_,Context::construct);
     return instance_;
+}
+
+const json& Context::getJson()
+{
+    return configJson_;
 }
 
 Context::Context()
