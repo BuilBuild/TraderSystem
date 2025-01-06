@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 21:25:46
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 21:30:33
+ * @LastEditTime: 2025-01-06 23:24:45
  * @Description: 
  */
 #include "CtpApi.h"
@@ -15,5 +15,6 @@ int main()
 {
     std::cout << "ctp api test" << std::endl;
     CtpApi api;
+    getchar();
     return 0;
 }
