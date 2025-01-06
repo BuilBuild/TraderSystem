@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 19:45:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 23:59:09
+ * @LastEditTime: 2025-01-07 00:31:36
  * @Description: 
  */
 #pragma once
@@ -56,6 +56,8 @@ class CTPMdSpi : public CThostFtdcMdSpi, public noncopyable
 {
 public:
     static int requestID_;
+    const char** instrumentId_;
+    int instrumentSize_;
 public:
     CTPMdSpi(CtpApi* ctpApi);
     ~CTPMdSpi();

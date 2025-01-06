@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 19:46:40
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 00:07:30
+ * @LastEditTime: 2025-01-07 00:38:26
  * @Description: 
  */
 #include "CtpApi.h"
@@ -63,9 +63,17 @@ void CtpApi::logIn()
 int CTPMdSpi::requestID_ = 0;
 
 CTPMdSpi::CTPMdSpi(CtpApi *ctpApi)
-    :ctpApi_(ctpApi),pUserApi_(ctpApi->pUserApi)
+    :ctpApi_(ctpApi),pUserApi_(ctpApi->pUserApi),instrumentId_(new const char*[ctpApi->instrumentId_.size()]),
+    instrumentSize_(ctpApi->instrumentId_.size())
 {
     std::cout << "CTPMdSpi create" << std::endl;
+    for(int i = 0; i <instrumentSize_; ++i)
+    {
+        instrumentId_[i] = ctpApi_->instrumentId_[i].c_str();
+    }
+//     for (size_t i = 0; i < url_vector.size(); i++) {
+//     urls[i] = url_vector[i].c_str();
+//   }
     
 }
 
@@ -104,6 +112,8 @@ void CTPMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThost
     else
     {
         LOG_INFO << "登陆成功，日期为： " << pUserApi_->GetTradingDay();
+        LOG_INFO << ctpApi_->instrumentId_.data();
+        int iResult = pUserApi_->SubscribeMarketData(const_cast<char**> (instrumentId_),instrumentSize_);
     }
 }
 
@@ -117,6 +127,8 @@ void CTPMdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool
 
 void CTPMdSpi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
+    std::cout << "=====订阅行情成功=====" << std::endl;
+	std::cout << "合约代码： " << pSpecificInstrument->InstrumentID << std::endl;
 }
 
 void CTPMdSpi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
