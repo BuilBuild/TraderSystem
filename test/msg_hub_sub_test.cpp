@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 16:22:57
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 18:51:42
+ * @LastEditTime: 2025-01-06 21:03:16
  * @Description: 
  */
 #include "zhelpers.h"
@@ -12,7 +12,7 @@
 #include <zmq.h>
 #include <stdio.h>
 
-char CONFIG_PATH[] = "/home/leijiulong/git_project/TraderSystem/ConfigFileDir/config.json";
+char CONFIG_PATH[] = "/home/leijiulong/temp/TraderSystem-main/ConfigFileDir/config.json";
 
 /**
 zmq::context_t context(1);
