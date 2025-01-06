@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 19:45:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 00:31:36
+ * @LastEditTime: 2025-01-07 01:58:47
  * @Description: 
  */
 #pragma once
@@ -32,7 +32,7 @@ public:
     explicit CtpApi();
     ~CtpApi();
 
-    void onOrderBookReceive() override;
+    void onOrderBookReceive(OrderBook &orderBook) override;
     void init() override;
 
     
@@ -44,7 +44,6 @@ private:
     // std::string brokerID_;
     // std::string userId_;
     // std::string passWord_;
-    std::vector<std::string> instrumentId_;
 
     CThostFtdcMdApi *pUserApi = nullptr;
     CThostFtdcReqUserLoginField loginReq{};

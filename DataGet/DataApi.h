@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:29:18
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 15:46:04
+ * @LastEditTime: 2025-01-07 02:07:45
  * @Description: 
  */
 #pragma once
@@ -10,6 +10,7 @@
 #include "BaseType.hpp"
 #include "Strategy.h"
 #include "SpinLock.hpp"
+#include "APIBase.h"
 
 #include <string>
 #include <tbb/concurrent_vector.h>
@@ -72,7 +73,7 @@ class DataApi : noncopyable
     using QuoteElementMap = tbb::concurrent_unordered_map<std::string, QuoteElement>;
     // using QuoteElementMap = std::unordered_map<std::string, QuoteElement>;
 public:
-    explicit DataApi();
+    explicit DataApi(APIBase *apiBase);
     /**
      * @brief Set the Strategy object 给数据api注册策略
      */
@@ -121,5 +122,8 @@ private:
     OrderQueue orderQueue_;
     // 分发订单簿线程 后期可以用线程池来提高效率
     std::thread threadDistribute_;
+    std::thread threadDataGet_;
+    // 数据接收源
+    APIBase* apiBase_;
 
 };

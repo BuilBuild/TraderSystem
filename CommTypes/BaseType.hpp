@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 12:49:06
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 15:06:58
+ * @LastEditTime: 2025-01-07 01:14:17
  * @Description: 基础数据类型描述
  */
 #pragma once
@@ -25,6 +25,20 @@ typedef struct OrderBookElement
     char TargeName[128];
     int64_t UpdateTime;
     TargetType OType;
+	/// 交易日
+	char TradingDay[9];
+	/// 合约代码
+	char InstrumentID[31];
+	/// 交易所代码
+	char ExchangeID[9];
+	/// 最新价格
+	double LastPrice;
+	/// 上次结算价
+	double PreSettlementPrice;
+	/// 数量
+	int Volume;
+	// 持仓量
+	double OpenInterest;
     ///申买价一
     double	BidPrice1;
 	///申买量一

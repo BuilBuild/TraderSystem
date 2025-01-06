@@ -2,13 +2,14 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 23:34:15
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 15:30:55
+ * @LastEditTime: 2025-01-07 02:13:07
  * @Description: 
  */
 #include <iostream>
 #include "DataCenter.h"
 #include "DataApi.h"
 #include "Strategy.h"
+#include "CtpApi.h"
 
 #include <muduo/base/Logging.h>
 #include <iostream>
@@ -18,6 +19,8 @@
 
 
 DataApi* DATA_API = nullptr;
+char CONFIG_PATH[] = "/home/leijiulong/temp/TraderSystem-main/ConfigFileDir/config.json";
+
 // Logger::LogLevel g_logLevel
 // 启动一个线程向DataApi实例里推送数据
 void putDataToAdataApi(DataApi *dataApi)
@@ -42,7 +45,7 @@ int main()
     muduo::Logger::Logger::setLogLevel(muduo::Logger::LogLevel::DEBUG);
 #endif
 
-    DATA_API = new DataApi();
+    DATA_API = new DataApi(new CtpApi());
     auto t = DataCenter::getInstance();
     Strategy s1 = Strategy("s1",t);
     Strategy s2 = Strategy("s2",t);
@@ -53,9 +56,10 @@ int main()
     };
     s1.subScribeTargetOne(a);
     s1.subScribeTargets(targetList, 5);
-    std::thread th(putDataToAdataApi, DATA_API);
+    
+    // std::thread th(putDataToAdataApi, DATA_API);
 
-    th.join();
+    // th.join();
 
     getchar();
     return 0; 

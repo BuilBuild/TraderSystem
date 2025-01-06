@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 19:46:40
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 00:38:26
+ * @LastEditTime: 2025-01-07 02:19:10
  * @Description: 
  */
 #include "CtpApi.h"
@@ -16,26 +16,25 @@ CtpApi::CtpApi()
 
 CtpApi::~CtpApi()
 {
-    
     pUserApi->Join();
 }
 
-void CtpApi::onOrderBookReceive()
+void CtpApi::onOrderBookReceive(OrderBook &orderBook)
 {
+    orderBookQueue_.emplace(orderBook);
+    // std::cout << orderBookQueue_.size() << "  "<< orderBook.TargeName << "  " << orderBook.LastPrice << std::endl;
+
 }
 
 void CtpApi::init()
 {
     using string  = std::string;
     auto t = context_->getJson().at("CTP_API");
-    sprintf(loginReq.BrokerID, string(t.at("BrokerID")).c_str());
-    sprintf(loginReq.UserID, string(t.at("UserID")).c_str());
-    sprintf(loginReq.Password, string(t.at("PassWord")).c_str());
-    
+    sprintf(loginReq.BrokerID,"%s",string(t.at("BrokerID")).c_str());
+    sprintf(loginReq.UserID,"%s", string(t.at("UserID")).c_str());
+    sprintf(loginReq.Password,"%s", string(t.at("PassWord")).c_str());
     gTradeFrontAddr_ = t.at("gTradeFrontAddr");
-    sprintf(FrontAddr, gTradeFrontAddr_.c_str());
-
-    std::cout << loginReq.BrokerID << std::endl;;
+    sprintf(FrontAddr, "%s", gTradeFrontAddr_.c_str());
     
     auto ic = t.at("InstrumentID");
     for(auto t: ic)
@@ -52,7 +51,6 @@ void CtpApi::logIn()
     ctpMdSpi_ = std::make_shared<CTPMdSpi>(this);
     pUserApi->RegisterSpi(ctpMdSpi_.get());
     pUserApi->RegisterFront(FrontAddr);
-    std::cout << FrontAddr << std::endl;
     pUserApi->Init();
 
 }
@@ -71,10 +69,6 @@ CTPMdSpi::CTPMdSpi(CtpApi *ctpApi)
     {
         instrumentId_[i] = ctpApi_->instrumentId_[i].c_str();
     }
-//     for (size_t i = 0; i < url_vector.size(); i++) {
-//     urls[i] = url_vector[i].c_str();
-//   }
-    
 }
 
 CTPMdSpi::~CTPMdSpi()
@@ -137,6 +131,16 @@ void CTPMdSpi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecific
 
 void CTPMdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
+    // 这里可以将数据写入第三方
+    OrderBook orderBook{};
+    memcpy(orderBook.TargeName, pDepthMarketData->InstrumentID, sizeof(pDepthMarketData->InstrumentID));
+    memcpy(orderBook.InstrumentID, pDepthMarketData->InstrumentID,sizeof(pDepthMarketData->InstrumentID));
+    
+    memcpy(orderBook.TradingDay, pDepthMarketData->TradingDay,sizeof(pDepthMarketData->TradingDay));
+    orderBook.LastPrice = pDepthMarketData->LastPrice;
+    orderBook.Volume = pDepthMarketData->Volume;
+    
+    ctpApi_->onOrderBookReceive(orderBook);
 }
 
 void CTPMdSpi::OnRspSubForQuoteRsp(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)

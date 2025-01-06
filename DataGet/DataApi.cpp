@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-05 15:16:31
+ * @LastEditTime: 2025-01-07 02:16:10
  * @Description: 
  */
 #include "DataApi.h"
@@ -41,13 +41,14 @@ std::string QuoteElement::name() const
     return name_;
 }
 
-DataApi::DataApi()
+DataApi::DataApi(APIBase *apiBase)
+    :apiBase_(apiBase)
 {
-    // 模拟一份可订阅合集，后期需从其他地方读入
-    for(int i = 0; i< 10; ++i)
+    // 从APIBase中获得一份可订阅合集
+    for(auto &t: apiBase_->instrumentId_)
     {
         char t_name[128] = {0};
-        sprintf(t_name, "target_%d", i);
+        sprintf(t_name, "%s", t.c_str());
         TargetOBJ e;
         e.name = t_name;
         dataApiTargetObjects_.insert(e);
@@ -64,6 +65,16 @@ DataApi::DataApi()
         while(true)
         {
             this->OrderDistribute();
+        }
+    });
+
+    // 启动数据获取线程
+    threadDataGet_ = std::thread([this]{
+        while(true)
+        {
+            OrderBook orderBook{};
+            apiBase_->orderBookGet(orderBook);
+            PutOrderBook(orderBook);
         }
     });
 
@@ -115,6 +126,7 @@ void DataApi::OrderDistribute()
     // 如果队列不为空取出数据更新到订单簿列表
     if(!orderQueue_.empty())
     {   
+        
         OrderBook orderBook{};
         // 如果队列元素获取成功，数据则会写入到orderBook中
         if(orderQueue_.try_pop(orderBook))
@@ -122,10 +134,11 @@ void DataApi::OrderDistribute()
             LOG_DEBUG<< "orderQueue_::size " << orderQueue_.unsafe_size();
             LOG_DEBUG <<"order name is "<< orderBook.TargeName <<"| get price " << orderBook.AskPrice1;
             // 更新订单簿
+            
             auto c = quoteElementMap_.find(orderBook.TargeName);
             if(c != quoteElementMap_.end())
             {
-                LOG_INFO <<"quoteElementMap_ find element success :" << c->second.name();
+                // LOG_INFO <<"quoteElementMap_ find element success :" << c->second.name();
                 c->second.update(orderBook);
             }
             
