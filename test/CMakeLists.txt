@@ -12,3 +12,6 @@ target_link_libraries(context_test TraderSystem_base)
 
 add_executable(message_hub_test message_hub_test.cpp)
 target_link_libraries(message_hub_test TraderSystem_base)
+
+add_executable(msg_hub_sub_test msg_hub_sub_test.cpp)
+target_link_libraries(msg_hub_sub_test TraderSystem_base)
