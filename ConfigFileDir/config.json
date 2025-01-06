@@ -1,3 +1,3 @@
 {
-    "messageHubBindPort":"0.0.0.0:5566"
+    "messageHubBindPort":"tcp://localhost:5555"
 }
