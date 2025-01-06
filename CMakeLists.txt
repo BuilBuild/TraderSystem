@@ -11,6 +11,7 @@ set(HEADER_DIR
     ${PROJECT_SOURCE_DIR}/Strategy
     ${PROJECT_SOURCE_DIR}/CommTypes
     ${PROJECT_SOURCE_DIR}/DataGet
+    ${PROJECT_SOURCE_DIR}/APIS
     )
 
 include_directories(${HEADER_DIR})
