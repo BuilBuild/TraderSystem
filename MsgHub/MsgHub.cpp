@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 15:36:36
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 18:49:39
+ * @LastEditTime: 2025-01-06 18:54:33
  * @Description: https://developer.aliyun.com/article/1468023
  */
 #include "MsgHub.h"
@@ -37,5 +37,4 @@ void MessagingHub::run()
         memcpy(msg.data(), msg_send.data(), msg_send.size());
         publisher_.send(msg);
     }
-
 }
