@@ -1,0 +1,60 @@
+@startuml
+
+
+' hide footbox
+title TRADING SYSTEM
+top to bottom direction
+
+
+node "DataDistribute" {
+DATAFEED - [DataDistribute Component]
+}
+
+package "DataGet" {
+[CTP Component]
+[Another Component]
+}
+
+package "STRATEGY" {
+collections strategies
+DataInput-[example]
+[example]-TradeOutput
+
+}
+
+package "MESSAGING HUB" {
+MSG_API - [MGS Component]
+}
+
+database "HISTORICAL DATA"{
+[history data] - S_API
+[history trade]
+}
+
+package "POSITION MANAGEMENT SYSTEM"{
+    [Position Component]
+}
+
+package "RISK MANAGEMENT SYSTEM"{
+    RISK_API -[RISK MANAGEMENT]
+}
+
+
+package "TRADING SYSTEM"{
+    EXECUTE-[Trading Component]
+    [Trading Component]-TRADE_INFO
+
+}
+
+
+[CTP Component] --> DATAFEED
+[DataDistribute Component] -> DataInput
+[DataDistribute Component] --> MSG_API
+[DataDistribute Component] ->S_API
+[MGS Component] -> RISK_API
+[MGS Component]->[Position Component]
+TradeOutput->EXECUTE
+[Trading Component] -> RISK_API
+TRADE_INFO->[history trade]
+
+@enduml
