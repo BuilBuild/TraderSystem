@@ -1,0 +1,27 @@
+@startuml
+
+interface "Orders" as DA
+
+node "ManageSystem"{
+DA -> [OrderQueue] : tcp
+    [Verify]
+    [Execution]
+}
+note left of Execution : One of Execution
+note left of Verify : Verify Orders
+
+node "Exchanges"{
+    [exchange]
+}
+node "message position"{
+    interface "message queue" as EM
+    EM -> [MessageHub]
+}
+
+
+OrderQueue --> Verify
+Verify --> Execution :  decorate order
+Execution -->exchange
+exchange -> Execution
+Execution ..> EM : tcp
+@enduml
