@@ -18,3 +18,6 @@ target_link_libraries(msg_hub_sub_test TraderSystem_base)
 
 add_executable(ctp_api_test ctp_api_test.cpp)
 target_link_libraries(ctp_api_test TraderSystem_base thostmduserapi_se)
+
+add_executable(execution_system_test execution_system_test.cpp)
+target_link_libraries(execution_system_test ExecutionSystem_base)

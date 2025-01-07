@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 14:28:20
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 21:48:11
+ * @LastEditTime: 2025-01-07 18:58:00
  * @Description: 
  */
 #pragma once
@@ -21,6 +21,9 @@ using json = nlohmann::json;
 
 extern char CONFIG_PATH[];
 
+/**
+ * @brief 上下文对象，存储着json配置文件的配置信息
+ */
 class Context
 {
 public:
