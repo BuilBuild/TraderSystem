@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 23:34:15
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 02:13:07
+ * @LastEditTime: 2025-01-07 14:43:36
  * @Description: 
  */
 #include <iostream>
@@ -19,25 +19,26 @@
 
 
 DataApi* DATA_API = nullptr;
+
 char CONFIG_PATH[] = "/home/leijiulong/temp/TraderSystem-main/ConfigFileDir/config.json";
 
 // Logger::LogLevel g_logLevel
 // 启动一个线程向DataApi实例里推送数据
-void putDataToAdataApi(DataApi *dataApi)
-{
-    OrderBook orderbook{};
-    orderbook.AskPrice1 = 0.1;
-    sprintf(orderbook.TargeName, "target_7");
-    while(true)
-    {
-        for(int i=0;i<50; ++i)
-        {
-            dataApi->PutOrderBook(orderbook);
-            orderbook.AskPrice1 += 0.5;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    }
-}
+// void putDataToAdataApi(DataApi *dataApi)
+// {
+//     OrderBook orderbook{};
+//     orderbook.AskPrice1 = 0.1;
+//     sprintf(orderbook.TargeName, "target_7");
+//     while(true)
+//     {
+//         for(int i=0;i<50; ++i)
+//         {
+//             dataApi->PutOrderBook(orderbook);
+//             orderbook.AskPrice1 += 0.5;
+//         }
+//         std::this_thread::sleep_for(std::chrono::milliseconds(500));
+//     }
+// }
 
 int main()
 {

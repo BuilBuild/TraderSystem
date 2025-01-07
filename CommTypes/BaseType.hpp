@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 12:49:06
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 01:14:17
+ * @LastEditTime: 2025-01-07 18:04:21
  * @Description: 基础数据类型描述
  */
 #pragma once
@@ -82,6 +82,48 @@ typedef struct OrderBookElement
     // 外部回调指针
     // void* MsgHandle;
 } OrderBook;
+
+typedef struct InputOrderField
+{
+	/// 经济公司代码
+	char BrokerId[11];
+	/// 投资者代码
+	char InvestorId[13];
+	/// 合约代码
+	char InstrumentID[31];
+	/// 报单引用
+	char OrderRef[13];
+	/// 用户代码
+	char UserID[16];
+	/// 报价价格条件
+	char OrderPriceType;
+	/// 买卖方向
+	char Direction;
+	/// 组合开平标志
+	char CombOffsetFlag[5];
+	/// 价格
+	double LimitPrice;
+	/// 数量
+	int VolumeTotalOriginal;
+
+} InputOrderField;
+
+typedef struct Order
+{
+	/// 归属策略
+	char StrategyName[31];
+	/// 归属用户
+	char UserName[31];
+	/// 标的名称
+	char TargetName[11];
+	/// 价格
+	double Price;
+	/// 数量
+	double Volume;
+	/// 买卖方向
+	char Direction;
+
+} Order;
 
 /**
  * @brief 标的信息

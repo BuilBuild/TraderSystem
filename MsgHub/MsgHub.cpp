@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 15:36:36
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 18:54:33
+ * @LastEditTime: 2025-01-07 14:53:39
  * @Description: https://developer.aliyun.com/article/1468023
  */
 #include "MsgHub.h"
@@ -26,8 +26,7 @@ MessagingHub::MessagingHub()
 }
 
 void MessagingHub::run()
-{
-    
+{   
     while(true)
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));

@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:41:44
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 02:27:11
+ * @LastEditTime: 2025-01-07 13:42:03
  * @Description: 
  */
 #include "DataApi.h"
@@ -119,10 +119,6 @@ void DataApi::PutOrderBook(const OrderBook &orderBook)
 
 void DataApi::OrderDistribute()
 {
-    // std::this_thread::sleep_for(std::chrono::seconds(2));
-    // auto t = orderQueue_.unsafe_size();
-    // LOG_INFO << "OrderDistribute Func, OrderQueue is empty? " << (orderQueue_.empty()? "true": "false") 
-    //     << " queue size: " << t;
     // 如果队列不为空取出数据更新到订单簿列表
     if(!orderQueue_.empty())
     {   
