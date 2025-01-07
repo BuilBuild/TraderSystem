@@ -9,4 +9,6 @@
 
 ExecutionBase::ExecutionBase()
 {
+    // 获得上下文对象指针
+    context_ = Context::getInstance();
 }

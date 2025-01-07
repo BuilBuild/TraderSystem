@@ -2,17 +2,19 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 19:32:16
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 19:36:24
+ * @LastEditTime: 2025-01-07 21:11:06
  * @Description: 
  */
 #pragma once
 
 #include "CTP/ThostFtdcTraderApi.h"
+#include "ExecutionCtpTrader.h"
+
 
 
 class TraderSpi : public CThostFtdcTraderSpi
 {
-    
+	friend class ExecutionCtpTrader;
 public:
     TraderSpi(CThostFtdcTraderApi *pUserApi):m_pUserApi(pUserApi){}
     ~TraderSpi(){}

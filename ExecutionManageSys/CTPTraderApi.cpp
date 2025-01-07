@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 19:35:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 19:45:53
+ * @LastEditTime: 2025-01-07 21:12:30
  * @Description: 
  */
 
@@ -15,7 +15,7 @@ void TraderSpi::OnFrontConnected()
 {
     std::cout << "=====建立网络连接成功=====" << std::endl;
 	// 开始登录
-	reqUserLogin();
+	// reqUserLogin();
 }
 
 void TraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
