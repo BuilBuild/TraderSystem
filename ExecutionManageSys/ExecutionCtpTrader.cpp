@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 18:28:23
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 21:39:20
+ * @LastEditTime: 2025-01-07 23:42:15
  * @Description: 
  */
 #include "ExecutionCtpTrader.h"
@@ -14,12 +14,15 @@ ExecutionCtpTrader::ExecutionCtpTrader()
     : ExecutionBase(),pUserApi_(CThostFtdcTraderApi::CreateFtdcTraderApi())
 {
     traderSpi_ = std::make_shared<TraderSpi>(pUserApi_);
+    traderSpi_->setCtpExecuteBase(this);
     
 }
 
 ExecutionCtpTrader::~ExecutionCtpTrader()
 {
     LOG_INFO << "CTPTrader destroy";
+    // pUserApi_->ReqUserLogout()
+    // traderSpi_->reqUserLogout();
     pUserApi_->Join();
 }
 
@@ -39,7 +42,6 @@ void ExecutionCtpTrader::init()
     sprintf(loginReq_.UserID, "%s", string(t["UserID"]).c_str());
     sprintf(loginReq_.Password, "%s", string(t["PassWord"]).c_str());
     sprintf(gTradeFrontAddr, "%s", string(t["gTradeFrontAddr"]).c_str());
-    std::cout << loginReq_.BrokerID << loginReq_.UserID << loginReq_.Password<< std::endl;
 
     pUserApi_->RegisterSpi(traderSpi_.get());
     pUserApi_->SubscribePublicTopic(THOST_TERT_RESTART);    // 订阅公共流
@@ -49,4 +51,14 @@ void ExecutionCtpTrader::init()
     pUserApi_->Init();
     
     
+}
+
+void ExecutionCtpTrader::getPositionInfo()
+{
+    
+}
+
+void ExecutionCtpTrader::reqQueryTradingAccount()
+{
+    traderSpi_->reqQueryTradingAccount();
 }

@@ -2,11 +2,12 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 19:35:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 21:12:30
+ * @LastEditTime: 2025-01-07 22:52:25
  * @Description: 
  */
 
 #include "CTPTraderApi.h"
+#include "ExecutionCtpTrader.h"
 #include <iostream>
 #include <string.h>
 #include <thread>
@@ -15,7 +16,7 @@ void TraderSpi::OnFrontConnected()
 {
     std::cout << "=====建立网络连接成功=====" << std::endl;
 	// 开始登录
-	// reqUserLogin();
+	reqUserLogin();
 }
 
 void TraderSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
@@ -71,12 +72,8 @@ void TraderSpi::OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFt
 void TraderSpi::reqUserLogin()
 {
     std::cout << "开始登录" << std::endl;
-    CThostFtdcReqUserLoginField loginReq{};
-	strcpy(loginReq.BrokerID, "9999");
-	strcpy(loginReq.UserID, "***");
-	strcpy(loginReq.Password, "***");
 	static int requestID = 0; // 请求编号
-	int rt = m_pUserApi->ReqUserLogin(&loginReq, requestID);
+	int rt = m_pUserApi->ReqUserLogin(&executionCtpTrader_->loginReq_, requestID);
 	if (!rt)
 		std::cout << ">>>>>>发送登录请求成功" << std::endl;
 	else
@@ -86,8 +83,8 @@ void TraderSpi::reqUserLogin()
 void TraderSpi::reqUserLogout()
 {
     CThostFtdcUserLogoutField logoutReq{};
-	strcpy(logoutReq.BrokerID, "9999");
-	strcpy(logoutReq.UserID, "***");
+	strcpy(logoutReq.BrokerID, executionCtpTrader_->loginReq_.BrokerID);
+	strcpy(logoutReq.UserID, executionCtpTrader_->loginReq_.UserID);
 	static int requestID = 0; // 请求编号
 	int rt = m_pUserApi->ReqUserLogout(&logoutReq, requestID);
 	if (!rt)
@@ -99,8 +96,8 @@ void TraderSpi::reqUserLogout()
 void TraderSpi::reqSettlementInfoConfirm()
 {
     CThostFtdcSettlementInfoConfirmField settlementConfirmReq{};
-    strcpy(settlementConfirmReq.BrokerID, "9999");
-	strcpy(settlementConfirmReq.InvestorID, "***");
+    strcpy(settlementConfirmReq.BrokerID, executionCtpTrader_->loginReq_.BrokerID);
+	strcpy(settlementConfirmReq.InvestorID, executionCtpTrader_->loginReq_.UserID);
     static int requestID = 0; // 请求编号
 	int rt = m_pUserApi->ReqSettlementInfoConfirm(&settlementConfirmReq, requestID);
     if (!rt)
@@ -110,32 +107,11 @@ void TraderSpi::reqSettlementInfoConfirm()
 
 }
 
-void TraderSpi::reqQueryInstrument()
-{
-	/*
-	///查询合约
-	struct CThostFtdcQryInstrumentField
-	{
-		///合约代码
-		TThostFtdcInstrumentIDType	InstrumentID;
-		///交易所代码
-		TThostFtdcExchangeIDType	ExchangeID;
-		///合约在交易所的代码
-		TThostFtdcExchangeInstIDType	ExchangeInstID;
-		///产品代码
-		TThostFtdcInstrumentIDType	ProductID;
-	};
-	*/
-    CThostFtdcQryInstrumentField instrumentReq;
-	memset(&instrumentReq, 0, sizeof(instrumentReq));
-	strcpy(instrumentReq.InstrumentID, "au2410");
-	strcpy(instrumentReq.ExchangeInstID, "au2410");//au2410C568
-	strcpy(instrumentReq.ExchangeID, "SHFE");
-	
-	
+void TraderSpi::reqQueryInstrument(CThostFtdcQryInstrumentField* qryInstrumentField)
+{	
 	static int requestID = 0; // 请求编号
 	/////合约在交易所的代码 不确定的时候会发送所有的查询
-	int rt = m_pUserApi->ReqQryInstrument(&instrumentReq, requestID);
+	int rt = m_pUserApi->ReqQryInstrument(qryInstrumentField, requestID);
 	if (!rt)
 		std::cout << ">>>>>>发送合约查询请求成功" << std::endl;
 	else
@@ -146,8 +122,8 @@ void TraderSpi::reqQueryInstrument()
 void TraderSpi::reqQueryTradingAccount()
 {
     CThostFtdcQryTradingAccountField tradingAccountReq{};
-	strcpy(tradingAccountReq.BrokerID, "9999");
-	strcpy(tradingAccountReq.InvestorID, "***");
+	strcpy(tradingAccountReq.BrokerID, executionCtpTrader_->loginReq_.BrokerID);
+	strcpy(tradingAccountReq.InvestorID, executionCtpTrader_->loginReq_.UserID);
 	static int requestID = 0; // 请求编号
 	std::this_thread::sleep_for(std::chrono::milliseconds(700)); // 有时候需要停顿一会才能查询成功
 	int rt = m_pUserApi->ReqQryTradingAccount(&tradingAccountReq, requestID);
@@ -157,70 +133,16 @@ void TraderSpi::reqQueryTradingAccount()
 		std::cerr << "--->>>发送投资者资金账户查询请求失败" << std::endl;
 }
 
-void TraderSpi::reqQueryInvestorPosition()
+void TraderSpi::reqQueryInvestorPosition(CThostFtdcQryInvestorPositionField *postionReq)
 {
-    CThostFtdcQryInvestorPositionField postionReq;
-	memset(&postionReq, 0, sizeof(postionReq));
-	strcpy(postionReq.BrokerID, "9999");
-	strcpy(postionReq.InvestorID, "****");
-	strcpy(postionReq.InstrumentID, "au2410");
 	static int requestID = 0; // 请求编号
 	std::this_thread::sleep_for(std::chrono::milliseconds(700)); // 有时候需要停顿一会才能查询成功
-	int rt = m_pUserApi->ReqQryInvestorPosition(&postionReq, requestID);
+	int rt = m_pUserApi->ReqQryInvestorPosition(postionReq, requestID);
 	if (!rt)
 		std::cout << ">>>>>>发送投资者持仓查询请求成功" << std::endl;
 	else
 		std::cerr << "--->>>发送投资者持仓查询请求失败" << std::endl;
 
-}
-
-void TraderSpi::reqOrderInsert()
-{
-    CThostFtdcInputOrderField orderInsertReq{};
-	memset(&orderInsertReq, 0, sizeof(orderInsertReq));
-	///经纪公司代码
-	strcpy(orderInsertReq.BrokerID, "9999");
-	///投资者代码
-	strcpy(orderInsertReq.InvestorID, "***");
-	///合约代码
-	strcpy(orderInsertReq.InstrumentID, "au2410");
-	///报单引用
-	strcpy(orderInsertReq.OrderRef, order_ref);
-	///报单价格条件: 限价
-	orderInsertReq.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
-	///买卖方向: 
-    TThostFtdcDirectionType gTradeDirection = THOST_FTDC_D_Sell;       // 买卖方向
-	orderInsertReq.Direction = gTradeDirection;
-	///组合开平标志: 开仓
-	orderInsertReq.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
-	///组合投机套保标志
-	orderInsertReq.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
-	///价格
-    TThostFtdcPriceType gLimitPrice = 22735;  
-	orderInsertReq.LimitPrice = gLimitPrice;
-	///数量：1
-	orderInsertReq.VolumeTotalOriginal = 1;
-	///有效期类型: 当日有效
-	orderInsertReq.TimeCondition = THOST_FTDC_TC_GFD;
-	///成交量类型: 任何数量
-	orderInsertReq.VolumeCondition = THOST_FTDC_VC_AV;
-	///最小成交量: 1
-	orderInsertReq.MinVolume = 1;
-	///触发条件: 立即
-	orderInsertReq.ContingentCondition = THOST_FTDC_CC_Immediately;
-	///强平原因: 非强平
-	orderInsertReq.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-	///自动挂起标志: 否
-	orderInsertReq.IsAutoSuspend = 0;
-	///用户强评标志: 否
-	orderInsertReq.UserForceClose = 0;
-
-	static int requestID = 0; // 请求编号
-	int rt = m_pUserApi->ReqOrderInsert(&orderInsertReq, ++requestID);
-	if (!rt)
-		std::cout << ">>>>>>发送报单录入请求成功" << std::endl;
-	else
-		std::cerr << "--->>>发送报单录入请求失败" << std::endl;
 }
 
 void TraderSpi::reqOrderAction(CThostFtdcOrderField *pOrder)
@@ -298,8 +220,9 @@ void TraderSpi::OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField 
 		std::cout << "=====投资者结算结果确认成功=====" << std::endl;
 		std::cout << "确认日期： " << pSettlementInfoConfirm->ConfirmDate << std::endl;
 		std::cout << "确认时间： " << pSettlementInfoConfirm->ConfirmTime << std::endl;
+
 		// 请求查询合约
-		reqQueryInstrument();
+		// reqQueryInstrument();
 	}
 }
 
@@ -314,8 +237,6 @@ void TraderSpi::OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThos
 		std::cout << "执行价： " << pInstrument->StrikePrice << std::endl;
 		std::cout << "到期日： " << pInstrument->EndDelivDate << std::endl;
 		std::cout << "当前交易状态： " << pInstrument->IsTrading << std::endl;
-		// 请求查询投资者资金账户
-		reqQueryTradingAccount();
 	}
 }
 
@@ -329,8 +250,6 @@ void TraderSpi::OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAc
 		std::cout << "可取资金： " << pTradingAccount->WithdrawQuota << std::endl;
 		std::cout << "当前保证金: " << pTradingAccount->CurrMargin << std::endl;
 		std::cout << "平仓盈亏： " << pTradingAccount->CloseProfit << std::endl;
-		// 请求查询投资者持仓
-		reqQueryInvestorPosition();
 	}
 }
 
@@ -359,8 +278,6 @@ void TraderSpi::OnRspQryInvestorPosition(CThostFtdcInvestorPositionField *pInves
 		// 策略交易
 		std::cout << "=====开始进入策略交易=====" << std::endl;
 
-		// while (loginFlag)
-		// 	StrategyCheckAndTrade(g_pTradeInstrumentID, this);
 	}
 }
 
@@ -418,46 +335,8 @@ void TraderSpi::OnRtnTrade(CThostFtdcTradeField *pTrade)
 
 }
 
-void TraderSpi::reqOrderInsert(TThostFtdcInstrumentIDType instrumentID, TThostFtdcPriceType price, TThostFtdcVolumeType volume, TThostFtdcDirectionType direction)
+void TraderSpi::reqOrderInsert(CThostFtdcInputOrderField &orderInsertReq)
 {
-    CThostFtdcInputOrderField orderInsertReq;
-	memset(&orderInsertReq, 0, sizeof(orderInsertReq));
-	///经纪公司代码
-	strcpy(orderInsertReq.BrokerID, "9999");
-	///投资者代码
-	strcpy(orderInsertReq.InvestorID, "***");
-	///合约代码
-	strcpy(orderInsertReq.InstrumentID, "au2410");
-	///报单引用
-	strcpy(orderInsertReq.OrderRef, order_ref);
-	///报单价格条件: 限价
-	orderInsertReq.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
-	///买卖方向:
-    TThostFtdcDirectionType gTradeDirection = THOST_FTDC_D_Sell;
-	orderInsertReq.Direction = gTradeDirection;
-	///组合开平标志: 开仓
-	orderInsertReq.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
-	///组合投机套保标志
-	orderInsertReq.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
-	///价格
-	orderInsertReq.LimitPrice = 570;
-	///数量：1
-	orderInsertReq.VolumeTotalOriginal = 1;
-	///有效期类型: 当日有效
-	orderInsertReq.TimeCondition = THOST_FTDC_TC_GFD;
-	///成交量类型: 任何数量
-	orderInsertReq.VolumeCondition = THOST_FTDC_VC_AV;
-	///最小成交量: 1
-	orderInsertReq.MinVolume = 1;
-	///触发条件: 立即
-	orderInsertReq.ContingentCondition = THOST_FTDC_CC_Immediately;
-	///强平原因: 非强平
-	orderInsertReq.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
-	///自动挂起标志: 否
-	orderInsertReq.IsAutoSuspend = 0;
-	///用户强评标志: 否
-	orderInsertReq.UserForceClose = 0;
-
 	static int requestID = 0; // 请求编号
 	int rt = m_pUserApi->ReqOrderInsert(&orderInsertReq, ++requestID);
 	if (!rt)

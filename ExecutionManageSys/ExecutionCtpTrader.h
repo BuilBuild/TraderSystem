@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 18:14:05
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 21:42:43
+ * @LastEditTime: 2025-01-07 22:00:17
  * @Description: 
  */
 #pragma once
@@ -18,6 +18,7 @@ class TraderSpi;
 
 class ExecutionCtpTrader : public ExecutionBase
 {
+    friend class TraderSpi;
 public:
     ExecutionCtpTrader();
     ~ExecutionCtpTrader();
@@ -27,6 +28,14 @@ public:
      * @brief 读取配置文件并初始化数据源
      */
     void init() override;
+    /**
+     * @brief  获取持仓信息
+     */
+    void getPositionInfo() override;
+    /**
+     * @brief 查询资金信息
+     */
+    void reqQueryTradingAccount() override;
     
 public:
     CThostFtdcTraderApi* pUserApi_;

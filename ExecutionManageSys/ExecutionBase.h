@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 17:22:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 21:42:08
+ * @LastEditTime: 2025-01-07 23:09:37
  * @Description: 
  */
 #pragma once
@@ -35,6 +35,15 @@ public:
      * @brief 读取配置文件并初始化数据源
      */
     virtual void init() = 0;
+    /**
+     * @brief  获取持仓信息
+     */
+    virtual void getPositionInfo() = 0;
+    /**
+     * @brief 查询资金信息
+     */
+    virtual void reqQueryTradingAccount() = 0;
+
 protected:
     OrderExecuteQueue orderExecuteQueue_;
     // 上下文对象

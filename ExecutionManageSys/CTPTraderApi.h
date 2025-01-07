@@ -2,15 +2,15 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 19:32:16
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 21:11:06
+ * @LastEditTime: 2025-01-07 23:13:35
  * @Description: 
  */
 #pragma once
 
 #include "CTP/ThostFtdcTraderApi.h"
-#include "ExecutionCtpTrader.h"
 
 
+class ExecutionCtpTrader;
 
 class TraderSpi : public CThostFtdcTraderSpi
 {
@@ -18,6 +18,8 @@ class TraderSpi : public CThostFtdcTraderSpi
 public:
     TraderSpi(CThostFtdcTraderApi *pUserApi):m_pUserApi(pUserApi){}
     ~TraderSpi(){}
+
+	void setCtpExecuteBase(ExecutionCtpTrader* executionCtpTrader){ executionCtpTrader_ = executionCtpTrader;};
 
     // ---- ctp_api部分回调接口 ---- //
 public:
@@ -66,30 +68,31 @@ public:
 // ---- 自定义函数 ---- //
 public:
 	bool loginFlag; // 登陆成功的标识
-	void reqOrderInsert(
-		TThostFtdcInstrumentIDType instrumentID,
-		TThostFtdcPriceType price,
-		TThostFtdcVolumeType volume,
-		TThostFtdcDirectionType direction); // 个性化报单录入，外部调用
+	// void reqOrderInsert(TCThostFtdcInputOrderField &orderInsertReq); // 个性化报单录入，外部调用
 private:
+	// 
+	ExecutionCtpTrader* executionCtpTrader_;
+
     // 会话参数
     TThostFtdcFrontIDType	trade_front_id;	//前置编号
     TThostFtdcSessionIDType	session_id;	//会话编号
     TThostFtdcOrderRefType	order_ref;	//报单引用
     CThostFtdcTraderApi *m_pUserApi= nullptr;
-    
-    // time_t lOrderTime;
-    // time_t lOrderOkTime;
 
-
-	void reqUserLogin(); // 登录请求
-	void reqUserLogout(); // 登出请求
-	void reqSettlementInfoConfirm(); // 投资者结果确认
-	void reqQueryInstrument(); // 请求查询合约
-	void reqQueryTradingAccount(); // 请求查询资金帐户
-	void reqQueryInvestorPosition(); // 请求查询投资者持仓
-	void reqOrderInsert(); // 请求报单录入
-	
+    // 登录请求
+	void reqUserLogin();
+	// 登出请求
+	void reqUserLogout();
+	// 投资者结果确认
+	void reqSettlementInfoConfirm();
+	// 请求查询合约
+	void reqQueryInstrument(CThostFtdcQryInstrumentField* qryInstrumentField);
+	// 请求查询资金帐户
+	void reqQueryTradingAccount();
+	// 请求查询投资者持仓
+	void reqQueryInvestorPosition(CThostFtdcQryInvestorPositionField *postionReq);
+	// 请求报单录入
+	void reqOrderInsert(CThostFtdcInputOrderField &orderInsertReq);
 	void reqOrderAction(CThostFtdcOrderField *pOrder); // 请求报单操作
 	bool isErrorRspInfo(CThostFtdcRspInfoField *pRspInfo); // 是否收到错误信息
 	bool isMyOrder(CThostFtdcOrderField *pOrder); // 是否我的报单回报

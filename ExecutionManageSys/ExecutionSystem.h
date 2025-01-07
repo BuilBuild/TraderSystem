@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 17:23:22
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 18:55:33
+ * @LastEditTime: 2025-01-07 23:24:51
  * @Description: 
  */
 #pragma once
@@ -19,6 +19,7 @@ using OrderQueue = tbb::concurrent_bounded_queue<Order>;
 class ExecutionSystem : noncopyable
 {
 public:
+    ExecutionSystem() = delete;
     ExecutionSystem(ExecutionBase *execution);
     ~ExecutionSystem();
     /**
@@ -29,6 +30,10 @@ public:
     void orderPut(const Order &order);
 
     void orderGet();
+    
+    void getPositionInfo();
+
+    void getTradingInfo();
     
 
 private:

@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 17:22:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 19:15:59
+ * @LastEditTime: 2025-01-07 23:25:00
  * @Description: 
  */
 
@@ -29,4 +29,14 @@ void ExecutionSystem::orderPut(const Order &order)
 
 void ExecutionSystem::orderGet()
 {
+}
+
+void ExecutionSystem::getPositionInfo()
+{
+    // executionBase_
+}
+
+void ExecutionSystem::getTradingInfo()
+{
+    executionBase_->reqQueryTradingAccount();
 }
