@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 14:28:20
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 18:58:00
+ * @LastEditTime: 2025-01-10 19:56:39
  * @Description: 
  */
 #pragma once
@@ -35,6 +35,7 @@ public:
     }
     
     const json& getJson();
+    std::string filePath() const;
 
 private:
     Context();
@@ -46,6 +47,7 @@ private:
     static std::once_flag flag_;
     json configJson_;
     std::string messageHubBindPort_;
+    std::string filePath_;
 };
 
 

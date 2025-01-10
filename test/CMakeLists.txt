@@ -21,3 +21,6 @@ target_link_libraries(ctp_api_test TraderSystem_base thostmduserapi_se)
 
 add_executable(execution_system_test execution_system_test.cpp)
 target_link_libraries(execution_system_test ExecutionSystem_base thosttraderapi_se)
+
+add_executable(oms_test oms_test.cpp)
+target_link_libraries(oms_test TraderSystem_base ExecutionSystem_base)

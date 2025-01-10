@@ -2,10 +2,11 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 16:13:24
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-06 21:48:38
+ * @LastEditTime: 2025-01-10 20:23:41
  * @Description: 
  */
 #include "Context.hpp"
+#include <iostream>
 
 
 Context* Context::instance_ = nullptr;
@@ -21,6 +22,11 @@ Context *Context::getInstance()
 const json& Context::getJson()
 {
     return configJson_;
+}
+
+std::string Context::filePath() const
+{
+    return filePath_;
 }
 
 Context::Context()
@@ -39,6 +45,7 @@ void Context::construct()
 
 void Context::loadConfigFile()
 {
+    filePath_ = CONFIG_PATH;
     std::ifstream f(CONFIG_PATH);
     if(f.is_open())
     {

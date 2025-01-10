@@ -13,6 +13,7 @@ set(HEADER_DIR
     ${PROJECT_SOURCE_DIR}/DataGet
     ${PROJECT_SOURCE_DIR}/APIS
     ${PROJECT_SOURCE_DIR}/ExecutionManageSys
+    ${PROJECT_SOURCE_DIR}/OrderSys
     )
 
 include_directories(${HEADER_DIR})
@@ -38,6 +39,7 @@ aux_source_directory(./Strategy Strategy_SRC)
 aux_source_directory(./Context Context_SRC)
 aux_source_directory(./MsgHub MsgHub_SRC)
 aux_source_directory(./ExecutionManageSys ExecutionSys_SRC)
+aux_source_directory(./OrderSys OrderSys)
 
 add_library(TraderSystem_base 
     ${DataGet_SRC} 
@@ -49,7 +51,7 @@ add_library(TraderSystem_base
 
 add_library(ExecutionSystem_base 
     ${ExecutionSys_SRC}
-
+    ${OrderSys}
     )
 
 target_link_libraries(TraderSystem_base TBB::tbb muduo_base zmq)
@@ -60,3 +62,4 @@ target_link_libraries(ExecutionSystem_base  TraderSystem_base)
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(ExecutionManageSys)
+
