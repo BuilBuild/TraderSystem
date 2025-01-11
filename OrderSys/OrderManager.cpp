@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-10 17:27:51
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-10 21:02:46
+ * @LastEditTime: 2025-01-11 18:12:34
  * @Description: 
  */
 
@@ -19,7 +19,7 @@ OMS::OMS()
     std::string subAddr = t["OMS"]["SubAddr"];
     std::cout << t["OMS"]["SubAddr"] << std::endl;
     subscriber_.connect(subAddr.c_str());
-    subscriber_.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+    subscriber_.setsockopt(ZMQ_SUBSCRIBE, "OMS", 0);
     threadReceiveMsg_ = std::thread(&OMS::receiveOrderData, this);
     
 }
@@ -40,7 +40,8 @@ void OMS::receiveOrderData()
         // std::this_thread::sleep_for(std::chrono::seconds(1));
         // std::cout << "receiveOrder" << std::endl;
         zmq::message_t message;
-        subscriber_.recv(&message);
+        auto flag = subscriber_.recv(message, zmq::recv_flags::none);
+        // std::cout << flag << std::endl;
         std::string update_str(static_cast<char*>(message.data()), message.size());
         std::cout << update_str << std::endl;
         // subscriber_.acc
