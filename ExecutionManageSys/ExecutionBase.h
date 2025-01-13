@@ -2,13 +2,14 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 17:22:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 23:09:37
+ * @LastEditTime: 2025-01-13 22:33:50
  * @Description: 
  */
 #pragma once
 
 #include "BaseType.hpp"
 #include "Context.hpp"
+#include "CTP/ThostFtdcTraderApi.h"
 
 #include <tbb/concurrent_queue.h>
 
@@ -43,6 +44,10 @@ public:
      * @brief 查询资金信息
      */
     virtual void reqQueryTradingAccount() = 0;
+    /**
+     * @brief 执行订单
+     */
+    virtual void executeOrder(Order &order) = 0;
 
 protected:
     OrderExecuteQueue orderExecuteQueue_;

@@ -2,13 +2,14 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-10 17:27:51
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-10 20:36:25
+ * @LastEditTime: 2025-01-13 22:08:40
  * @Description: 
  */
 #pragma once
 
 #include "BaseType.hpp"
 #include "Context.hpp"
+#include "ExecutionSystem.h"
 
 #include <zmq.hpp>
 #include <tbb/concurrent_queue.h>
@@ -20,7 +21,7 @@ using OrderQueueGet = tbb::concurrent_bounded_queue<Order>;
 class OMS : noncopyable
 {
 public:
-    explicit OMS();
+    explicit OMS(ExecutionSystem *executionSystem);
     ~OMS();
     
     /**
@@ -33,7 +34,7 @@ private:
     /**
      * @brief 将验证好的订单和失败的订单分别推送到不同的队列
      */
-    void pushOrder(Order &);
+    void pushOrder(const Order &);
 
     /**
      * @brief 用于验证订单是否可以执行
@@ -41,6 +42,10 @@ private:
      * @return false 
      */
     bool orderValidOk(Order &);
+    /**
+     * @brief 验证订单然后推送到不同的队列
+     */
+    void orderVerify();
     
 private:
     // zero 上下文对象
@@ -53,10 +58,18 @@ private:
     OrderQueueGet orderFilledQueue_;
     // 验证失败的队列
     OrderQueueGet OrderFailedQueue_;
+    
     // 接收接收到的订单
     std::thread threadReceiveMsg_;
+    // 收到订单验证线程风别推送到不同的队列
+    std::thread threadVerifyOrder_;
+    // 将已经验证好的订单推送到执行器
+    std::thread threadOrderPutExecution_;
     // 配置文件上下文对象
     Context *context_;
     // 启动标志
     bool isStop_;
+
+    // 执行系统
+    ExecutionSystem *executionSystem_;
 };

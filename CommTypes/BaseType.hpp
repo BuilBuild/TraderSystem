@@ -2,13 +2,14 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 12:49:06
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 18:04:21
+ * @LastEditTime: 2025-01-13 22:45:47
  * @Description: 基础数据类型描述
  */
 #pragma once
 
 #include <sys/types.h>
 #include <string>
+
 
 
 enum TargetType
@@ -119,7 +120,7 @@ typedef struct Order
 	/// 价格
 	double Price;
 	/// 数量
-	double Volume;
+	int Volume;
 	/// 买卖方向
 	char Direction;
 

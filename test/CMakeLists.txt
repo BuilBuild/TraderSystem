@@ -23,4 +23,7 @@ add_executable(execution_system_test execution_system_test.cpp)
 target_link_libraries(execution_system_test ExecutionSystem_base thosttraderapi_se)
 
 add_executable(oms_test oms_test.cpp)
-target_link_libraries(oms_test TraderSystem_base ExecutionSystem_base)
+target_link_libraries(oms_test TraderSystem_base ExecutionSystem_base thosttraderapi_se)
+
+add_executable(msg_hub_test MsgHub_test.cpp)
+target_link_libraries(msg_hub_test TraderSystem_base zmq)

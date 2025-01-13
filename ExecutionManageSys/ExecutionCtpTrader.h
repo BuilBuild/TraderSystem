@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 18:14:05
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-07 22:00:17
+ * @LastEditTime: 2025-01-13 22:34:13
  * @Description: 
  */
 #pragma once
@@ -36,6 +36,10 @@ public:
      * @brief 查询资金信息
      */
     void reqQueryTradingAccount() override;
+    /**
+     * @brief 执行订单
+     */
+    virtual void executeOrder(Order &order) override;
     
 public:
     CThostFtdcTraderApi* pUserApi_;

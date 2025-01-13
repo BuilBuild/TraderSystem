@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-03 22:20:57
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-04 19:12:06
+ * @LastEditTime: 2025-01-11 20:03:55
  * @Description: 
  */
 #pragma once
@@ -60,7 +60,7 @@ public:
     
 private:
 
-private:
+protected:
     std::string name_;
     // 订阅集合
     TargetSubscribeSet subscribeSet_;
