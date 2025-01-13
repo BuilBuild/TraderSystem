@@ -53,7 +53,23 @@
                 "ao2502",
                 "br2502"
             ]
+        },
+        // 订单执行器系统配置
+        "ExecutionManage":{
+            "CTPTrader":{
+            "gTradeFrontAddr": "tcp://180.168.146.187:10202",
+            "BrokerID": "9999",
+            "UserID": "***",
+            "PassWord": "***"
+            }
+        },
+        // 订单管理系统配置
+        "OMS":{
+            "OMS_ID": 1,
+            // 推送接口
+            "SubAddr": "tcp://localhost:5558"
         }
+
     }
     ```
 - 示例代码
@@ -61,15 +77,20 @@
     ```cpp
     #include <iostream>
     #include "DataCenter.h"
+    #include "DataApi.h"
     #include "Strategy.h"
     #include "CtpApi.h"
 
     #include <muduo/base/Logging.h>
+    #include <iostream>
+    #include <thread>
+    #include <chrono>
+    #include <string>
 
 
-    // 配置文件的路径
+    DataApi* DATA_API = nullptr;
+
     char CONFIG_PATH[] = "/home/leijiulong/temp/TraderSystem-main/ConfigFileDir/config.json";
-
     int main()
     {
     #ifdef LOG_DEBUG
@@ -87,8 +108,29 @@
         };
         s1.subScribeTargetOne(a);
         s1.subScribeTargets(targetList, 5);
-
         getchar();
         return 0; 
     }
+    ``` 
+    订单执行测试
+    ```cpp
+    #include "OrderManager.h"
+    #include "ExecutionSystem.h"
+    #include "ExecutionCtpTrader.h"
+
+    #include <iostream>
+
+    char CONFIG_PATH[] = "/home/leijiulong/temp/TraderSystem-main/ConfigFileDir/config.json";
+
+    int main()
+    {
+        ExecutionCtpTrader ctpTrader;
+        ExecutionSystem t(&ctpTrader);
+        OMS ms(&t);
+        getchar();
+        t.getTradingInfo();
+        getchar();
+        return 0;
+    }
+
     ```
