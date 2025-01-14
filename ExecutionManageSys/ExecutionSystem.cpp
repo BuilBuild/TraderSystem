@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 17:22:49
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-13 22:38:06
+ * @LastEditTime: 2025-01-14 00:10:59
  * @Description: 
  */
 
@@ -58,5 +58,5 @@ void ExecutionSystem::getTradingInfo()
 void ExecutionSystem::executeOrder(Order &order)
 {
     executionBase_->executeOrder(order);
-    std::cout << "Execution Order: prise is  "  << order.Price << std::endl;
+    // std::cout << "Execution Order: prise is  "  << order.Price << std::endl;
 }

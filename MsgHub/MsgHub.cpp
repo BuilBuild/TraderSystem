@@ -2,14 +2,19 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-06 15:36:36
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-13 23:22:32
+ * @LastEditTime: 2025-01-14 20:59:39
  * @Description: https://developer.aliyun.com/article/1468023
  */
 #include "MsgHub.h"
+#include "BaseType.hpp"
 #include "json.hpp"
+
+#include <tbb/concurrent_queue.h>
 #include <string>
 
 using json = nlohmann::json;
+
+using OrderQueue = tbb::concurrent_bounded_queue<Order>;
 
 MessagingHub::MessagingHub()
     :context_(1), publisher_(context_, ZMQ_PUB)
@@ -34,6 +39,7 @@ void MessagingHub::start()
 
 void MessagingHub::run()
 {   
+    double price = 999.2;
     while(true)
     {
         // 用json 模拟一个订单消息
@@ -41,10 +47,10 @@ void MessagingHub::run()
         orderJson["StrategyName"] = "test";
         orderJson["UserName"] = "admin";
         orderJson["TargetName"] = "au2502";
-        orderJson["Price"] = 9999.25;
+        orderJson["Price"] = price;
         orderJson["Volume"] = 2;
-        orderJson["Direction"] = '1';
-
+        orderJson["Direction"] = "1";
+        price += 2.5;
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         std::string topic = "OMS";

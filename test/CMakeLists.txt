@@ -27,3 +27,9 @@ target_link_libraries(oms_test TraderSystem_base ExecutionSystem_base thosttrade
 
 add_executable(msg_hub_test MsgHub_test.cpp)
 target_link_libraries(msg_hub_test TraderSystem_base zmq)
+
+add_executable(MsgHubCenter_test MsgHubCenter_test.cpp)
+target_link_libraries(MsgHubCenter_test TraderSystem_base zmq)
+
+add_executable(OrderMsgPubCenter_test OrderMsgPubCenter_test.cpp)
+target_link_libraries(OrderMsgPubCenter_test TraderSystem_base zmq)

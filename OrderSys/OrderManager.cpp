@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-10 17:27:51
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-13 23:42:24
+ * @LastEditTime: 2025-01-14 23:35:44
  * @Description: 
  */
 
@@ -22,7 +22,7 @@ OMS::OMS(ExecutionSystem *executionSystem)
     context_ = Context::getInstance(); 
     auto t = context_->getJson();
     std::string subAddr = t["OMS"]["SubAddr"];
-    std::cout << t["OMS"]["SubAddr"] << std::endl;
+    std::cout << "OMS connect: " << t["OMS"]["SubAddr"] << std::endl;
     subscriber_.connect(subAddr.c_str());
     subscriber_.setsockopt(ZMQ_SUBSCRIBE, "OMS", 3);
 
@@ -36,7 +36,7 @@ OMS::OMS(ExecutionSystem *executionSystem)
     threadOrderPutExecution_ = std::thread([this]{
         while(true)
         {
-            std::cout << "送入执行订单执行器具" << std::endl;
+            // std::cout << "送入执行订单执行器" << std::endl;
             Order order;
             // 当队列为空时线程会堵塞这里
             orderFilledQueue_.pop(order);
@@ -74,14 +74,14 @@ void OMS::receiveOrderData()
         zmq::message_t message;
         flag = subscriber_.recv(message, zmq::recv_flags::none);
         std::string messageStr(static_cast<char*>(message.data()),message.size());
-        std::cout << "get message: " << messageStr << std::endl;
+        // std::cout << "get message: " << messageStr << std::endl;
         auto orderGet = json::parse(messageStr);
         std::string StrategyName = orderGet["StrategyName"];
         std::string TargetName = orderGet["TargetName"];
         std::string UserName = orderGet["UserName"];
         double Price = orderGet["Price"];
         int Volume = orderGet["Volume"];
-        // char Direction = std::string(orderGet["Direction"])[0];
+        char Direction = std::string(orderGet["Direction"])[0];
 
         // 将收到的信息序列化，经过验证后存储到执行订单队列
         Order order{};
@@ -90,11 +90,11 @@ void OMS::receiveOrderData()
         memcpy(order.UserName, UserName.c_str(), UserName.length());
         order.Price = Price;
         order.Volume = Volume;
-        // order.Direction = Direction;
+        order.Direction = Direction;
         
         // 将订单推送入更新队列
         orderUpdates_.emplace(order);
-        std::cout << orderUpdates_.size() << std::endl;
+        // std::cout << orderUpdates_.size() << std::endl;
 
     }
 }
