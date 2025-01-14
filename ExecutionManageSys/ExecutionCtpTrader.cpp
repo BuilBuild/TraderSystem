@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-07 18:28:23
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-13 22:36:44
+ * @LastEditTime: 2025-01-15 00:00:49
  * @Description: 
  */
 #include "ExecutionCtpTrader.h"
@@ -66,7 +66,7 @@ void ExecutionCtpTrader::reqQueryTradingAccount()
 void ExecutionCtpTrader::executeOrder(Order &order)
 {
     // 这里需要进行包装 插入柜台
-    std::cout << "get order " << order.TargetName << "  prise: " << order.Price << " Direction: "
+    std::cout << "get order " << order.TargetName << "  price: " << order.Price << " Direction: "
         << order.Direction << std::endl;
     // traderSpi_->reqOrderInsert(orderInsertReq);
 }

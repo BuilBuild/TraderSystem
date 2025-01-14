@@ -2,7 +2,7 @@
  * @Author: LeiJiulong
  * @Date: 2025-01-14 22:36:15
  * @LastEditors: LeiJiulong && lei15557570906@outlook.com
- * @LastEditTime: 2025-01-14 23:30:03
+ * @LastEditTime: 2025-01-14 23:59:20
  * @Description: 
  */
 
@@ -39,6 +39,6 @@ void MsgHubCenter::stop()
 
 void MsgHubCenter::run()
 {
-    LOG_INFO << "Message Center start" << __func__;
-    zmq::proxy_steerable(XSUP_, XSUP_, nullptr, nullptr);
+    LOG_INFO << "Message Center start " << __func__;
+    zmq::proxy_steerable(XPUB_,XSUP_, nullptr, nullptr);
 }

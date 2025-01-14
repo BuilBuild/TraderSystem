@@ -68,7 +68,14 @@
             "OMS_ID": 1,
             // 推送接口
             "SubAddr": "tcp://localhost:5558"
+        },
+        // 消息中心接口配置（ZeroMQ XSUB-XPUB模式）
+        "MsgHubCenter":{
+            "XSUBBindAddr": "tcp://*:9898",
+            "XSUBConnectAddr": "tcp://localhost:9898",
+            "XPUBBindAddr": "tcp://*:5558"
         }
+        
 
     }
     ```
