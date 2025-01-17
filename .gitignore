@@ -35,4 +35,5 @@ bin
 build
 .vscode
 ConfigFileDir
-
+*.csv
+log.txt
